@@ -7,23 +7,22 @@ const App = () => {
   const APP_KEY = "50b72a3100211897cbe2f0edd3c703e3";
   // const exampleReq = `https://api.edamam.com/search?q=chicken&app_id=${APP_ID}&app_key=${APP_KEY}`;
 
-  const [counter, setCounter] = useState(0);
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState();
-  const [query, setQuery] = useState('chicken');
-
+  const [query, setQuery] = useState('momo');
+  
   useEffect(() => {
-    getRecipe();
+   async function getRecipe() {
+      const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`);
+      const data = await response.json();
+      setRecipes(data.hits);
+      console.log(data.hits);
+    }
+    getRecipe()
     console.log("effect has been run");
   }, [query]);
 
-
-  const getRecipe = async () => {
-    const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`);
-    const data = await response.json();
-    setRecipes(data.hits);
-    console.log(data.hits);
-  };
+  
 
   const inputSearch = (e) => {
     setSearch(e.target.value);
